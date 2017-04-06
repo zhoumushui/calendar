@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Cherish</string>
+
+    <!-- BottomNavigationView -->
     <string name="title_calendar">Calendar</string>
     <string name="title_past">Past</string>
     <string name="title_chronograph">Chronograph</string>
+
+    <!-- UncaughtExceptionHandler -->
+    <string name="app_has_exception">App is exception</string>
 </resources>
+
