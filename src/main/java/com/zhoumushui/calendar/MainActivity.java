@@ -2,6 +2,7 @@ package com.zhoumushui.calendar;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.PagerAdapter;
@@ -11,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.zhoumushui.calendar.util.DateUtil;
@@ -28,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuItem menuItem;
     private BottomNavigationView bottomNavigationView;
+
+    // Chronograph
+    private Chronometer chronometer;
+    private Button btnChronometerState;
+    private Button btnChronometerReset;
+    private boolean isChronometerRun = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +179,13 @@ public class MainActivity extends AppCompatActivity {
             break;
 
             case 2: { // Chronograph
+                chronometer = (Chronometer) findViewById(R.id.chronometer);
+                chronometer.setFormat("%s");
+
+                btnChronometerState = (Button) findViewById(R.id.btnChronometerState);
+                btnChronometerState.setOnClickListener(myOnClickLister);
+                btnChronometerReset = (Button) findViewById(R.id.btnChronometerReset);
+                btnChronometerReset.setOnClickListener(myOnClickLister);
             }
             break;
 
@@ -177,6 +193,37 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    private View.OnClickListener myOnClickLister = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btnChronometerState:
+                    if (chronometer != null) {
+                        if (!isChronometerRun) {
+                            isChronometerRun = true;
+                            chronometer.start();
+                            btnChronometerState.setText(getString(R.string.chronometer_pause));
+                            btnChronometerReset.setVisibility(View.GONE);
+                        } else {
+                            isChronometerRun = false;
+                            chronometer.stop();
+                            btnChronometerState.setText(getString(R.string.chronometer_continue));
+                            btnChronometerReset.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    break;
+
+                case R.id.btnChronometerReset:
+                    if (chronometer != null) {
+                        chronometer.setBase(SystemClock.elapsedRealtime());
+                        btnChronometerState.setText(getString(R.string.chronometer_start));
+                        btnChronometerReset.setVisibility(View.GONE);
+                    }
+                    break;
+            }
+        }
+    };
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener myOnNavigationItemSelectedListener

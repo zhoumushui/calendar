@@ -9,5 +9,11 @@
 
     <!-- UncaughtExceptionHandler -->
     <string name="app_has_exception">App is exception</string>
+
+    <!-- Chronograph -->
+    <string name="chronometer_start">Start</string>
+    <string name="chronometer_pause">Pause</string>
+    <string name="chronometer_continue">Continue</string>
+    <string name="chronometer_reset">Reset</string>
 </resources>
 

@@ -8,10 +8,28 @@
     android:orientation="vertical"
     tools:context="com.zhoumushui.calendar.MainActivity">
 
-    <TextView
+    <Chronometer
+        android:id="@+id/chronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/title_chronograph" />
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:id="@+id/btnChronometerState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/chronometer_start" />
+
+    <Button
+        android:id="@+id/btnChronometerReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/chronometer_reset"
+        android:visibility="gone" />
+
 
 </RelativeLayout>
