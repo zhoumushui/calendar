@@ -12,11 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.TextView;
 
-import com.zhoumushui.calendar.util.HintUtil;
+import com.zhoumushui.calendar.util.DateUtil;
 import com.zhoumushui.calendar.util.MyLog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -145,23 +147,29 @@ public class MainActivity extends AppCompatActivity {
     private void updateLayout(int position) {
         MyLog.v("updateLayout:" + position);
         switch (position) {
-            case 0: {
+            case 0: { // Calendar
+                final TextView textLunarDate = (TextView) findViewById(R.id.textLunarDate);
+                Calendar calendar = Calendar.getInstance();
+                textLunarDate.setText(DateUtil.getLunarDateByCalendar(calendar));
+
                 CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month,
                                                     int dayOfMonth) {
-                        HintUtil.showToast(context, year + "-" + (month + 1) + "-" + dayOfMonth);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year, month, dayOfMonth);
+                        textLunarDate.setText(DateUtil.getLunarDateByCalendar(calendar));
                     }
                 });
             }
             break;
 
-            case 1: {
+            case 1: { // Past
             }
             break;
 
-            case 2: {
+            case 2: { // Chronograph
             }
             break;
 
