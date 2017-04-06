@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">惜时</string>
+
+    <!-- BottomNavigationView -->
+    <string name="title_calendar">日历</string>
+    <string name="title_past">纪念日</string>
+    <string name="title_chronograph">秒表</string>
+
+    <!-- UncaughtExceptionHandler -->
+    <string name="app_has_exception">很抱歉应用出现异常</string>
+</resources>

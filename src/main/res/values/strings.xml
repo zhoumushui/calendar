@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Calendar</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name">Cherish</string>
+    <string name="title_calendar">Calendar</string>
+    <string name="title_past">Past</string>
+    <string name="title_chronograph">Chronograph</string>
 </resources>
