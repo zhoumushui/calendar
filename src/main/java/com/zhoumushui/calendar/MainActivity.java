@@ -21,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private List<View> viewList;
 
+    private MenuItem menuItem;
+    private BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initialLayout() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+        bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(myOnNavigationItemSelectedListener);
 
@@ -75,14 +78,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 MyLog.d("onPageSelected:" + position);
+
+                if (menuItem != null) {
+                    menuItem.setChecked(false);
+                } else {
+                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                }
+                menuItem = bottomNavigationView.getMenu().getItem(position);
+                menuItem.setChecked(true);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
                 MyLog.d("onPageScrollStateChanged:" + state);
             }
         });
+
+        // 禁止ViewPager滑动
+        /**
+         viewPager.setOnTouchListener(new View.OnTouchListener() {
+        @Override public boolean onTouch(View v, MotionEvent event) {
+        return true;
+        }
+        });
+         */
+
     }
 
     private PagerAdapter pagerAdapter = new PagerAdapter() {
@@ -108,6 +128,12 @@ public class MainActivity extends AppCompatActivity {
 
             return viewList.get(position);
         }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            MyLog.v("destroyItem position" + position);
+            container.removeView(viewList.get(position));
+        }
     };
 
     private void updateLayout(int position) {
@@ -122,12 +148,15 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_calendar:
+                    viewPager.setCurrentItem(0);
                     return true;
 
                 case R.id.navigation_past:
+                    viewPager.setCurrentItem(1);
                     return true;
 
                 case R.id.navigation_chronograph:
+                    viewPager.setCurrentItem(2);
                     return true;
             }
             return false;

@@ -30,7 +30,7 @@ import com.zhoumushui.calendar.R;
  */
 public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
 
-    public static final String TAG = "AZ";
+    private static String crashLogPath = "";
 
     // 系统默认的UncaughtException处理类
     private UncaughtExceptionHandler mDefaultHandler;
@@ -65,6 +65,7 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
      */
     public void init(Context context) {
         this.context = context;
+        crashLogPath = context.getExternalCacheDir() + "/Log/";
         // 获取系统默认的UncaughtException处理器
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         // 设置该CrashHandler为程序的默认处理器
@@ -83,7 +84,7 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
-                Log.e(TAG, "error : ", e);
+                MyLog.e("error : " + e);
             }
             // 退出程序
             android.os.Process.killProcess(android.os.Process.myPid());
@@ -94,11 +95,11 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
     /**
      * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成.
      *
-     * @param ex
+     * @param throwable
      * @return true:如果处理了该异常信息;否则返回false.
      */
-    private boolean handleException(Throwable ex) {
-        if (ex == null) {
+    private boolean handleException(Throwable throwable) {
+        if (throwable == null) {
             return false;
         }
         // 使用Toast来显示异常信息
@@ -109,12 +110,12 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
                 HintUtil.showToast(
                         context,
                         context.getResources().getString(
-                                R.string.app_has_exception));
+                                R.string.app_has_exception) + crashLogPath);
                 Looper.loop();
             }
         }.start();
         collectDeviceInfo(context); // 收集设备参数信息
-        saveCrashInfo2File(ex); // 保存日志文件
+        saveCrashInfo2File(throwable); // 保存日志文件
 
         // 把日志保存后上传
         // if(fileName != null)
@@ -125,31 +126,31 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
     /**
      * 收集设备参数信息
      *
-     * @param ctx
+     * @param context
      */
-    public void collectDeviceInfo(Context ctx) {
+    public void collectDeviceInfo(Context context) {
         try {
-            PackageManager pm = ctx.getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(),
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(),
                     PackageManager.GET_ACTIVITIES);
-            if (pi != null) {
-                String versionName = pi.versionName == null ? "null"
-                        : pi.versionName;
-                String versionCode = pi.versionCode + "";
+            if (packageInfo != null) {
+                String versionName = packageInfo.versionName == null ? "null"
+                        : packageInfo.versionName;
+                String versionCode = packageInfo.versionCode + "";
                 infos.put("versionName", versionName);
                 infos.put("versionCode", versionCode);
             }
         } catch (NameNotFoundException e) {
-            Log.e(TAG, "an error occured when collect package info", e);
+            MyLog.e("an error occurred when collect package info:" + e);
         }
         Field[] fields = Build.class.getDeclaredFields();
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
                 infos.put(field.getName(), field.get(null).toString());
-                Log.d(TAG, field.getName() + " : " + field.get(null));
+                MyLog.d(field.getName() + " : " + field.get(null));
             } catch (Exception e) {
-                Log.e(TAG, "an error occured when collect crash info", e);
+                MyLog.e("an error occurred when collect crash info:" + e);
             }
         }
     }
@@ -157,10 +158,10 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
     /**
      * 保存错误信息到文件中
      *
-     * @param ex
+     * @param throwable
      * @return 返回文件名称, 便于将文件传送到服务器
      */
-    private void saveCrashInfo2File(Throwable ex) {
+    private void saveCrashInfo2File(Throwable throwable) {
         if (!ClickUtil.isSaveLogTooQuick(10 * 1000)) {
             StringBuffer sb = new StringBuffer();
             for (Map.Entry<String, String> entry : infos.entrySet()) {
@@ -171,8 +172,8 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
 
             Writer writer = new StringWriter();
             PrintWriter printWriter = new PrintWriter(writer);
-            ex.printStackTrace(printWriter);
-            Throwable cause = ex.getCause();
+            throwable.printStackTrace(printWriter);
+            Throwable cause = throwable.getCause();
             while (cause != null) {
                 cause.printStackTrace(printWriter);
                 cause = cause.getCause();
@@ -186,9 +187,9 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
                 String fileName = time + ".log";
                 if (Environment.getExternalStorageState().equals(
                         Environment.MEDIA_MOUNTED)) {
-                    File dir = new File(crashLogPath);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
+                    File fileDir = new File(crashLogPath);
+                    if (!fileDir.exists()) {
+                        fileDir.mkdirs();
                     }
                     FileOutputStream fos = new FileOutputStream(crashLogPath
                             + fileName);
@@ -196,10 +197,8 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
                     fos.close();
                 }
             } catch (Exception e) {
-                Log.e(TAG, "an error occured while writing file...", e);
+                MyLog.e("an error occurred while writing file:" + e);
             }
         }
     }
-
-    public static String crashLogPath = "/storage/sdcard0/.ZMSLog/Calendar/";
 }
