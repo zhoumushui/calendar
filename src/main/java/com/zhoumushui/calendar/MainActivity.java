@@ -1,5 +1,6 @@
 package com.zhoumushui.calendar;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,14 +11,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 
+import com.zhoumushui.calendar.util.HintUtil;
 import com.zhoumushui.calendar.util.MyLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Context context;
     private ViewPager viewPager;
     private List<View> viewList;
 
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
         setContentView(R.layout.activity_main);
 
         initialLayout();
@@ -55,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private void initialLayout() {
         bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(myOnNavigationItemSelectedListener);
+        bottomNavigationView.
+                setOnNavigationItemSelectedListener(myOnNavigationItemSelectedListener);
 
         setupViewPager();
     }
@@ -71,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
                 MyLog.d("onPageScrolled:" + position);
             }
 
@@ -138,6 +144,30 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateLayout(int position) {
         MyLog.v("updateLayout:" + position);
+        switch (position) {
+            case 0: {
+                CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month,
+                                                    int dayOfMonth) {
+                        HintUtil.showToast(context, year + "-" + (month + 1) + "-" + dayOfMonth);
+                    }
+                });
+            }
+            break;
+
+            case 1: {
+            }
+            break;
+
+            case 2: {
+            }
+            break;
+
+            default:
+                break;
+        }
     }
 
 
