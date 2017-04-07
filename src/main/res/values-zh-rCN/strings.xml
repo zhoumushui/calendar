@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">惜时</string>
+    <string name="app_name">几时</string>
 
     <!-- BottomNavigationView -->
-    <string name="title_calendar">日历</string>
-    <string name="title_past">纪念日</string>
-    <string name="title_chronograph">秒表</string>
+    <string name="title_diary">记</string>
+    <string name="title_count">计</string>
+    <string name="title_event">纪</string>
 
     <!-- UncaughtExceptionHandler -->
     <string name="app_has_exception">很抱歉应用出现异常</string>

@@ -32,12 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem menuItem;
     private BottomNavigationView bottomNavigationView;
 
-    // Chronograph
-    private Chronometer chronometer;
-    private Button btnChronometerState;
-    private Button btnChronometerReset;
-    private boolean isChronometerRun = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager() {
         viewList = new ArrayList<>();
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-        viewList.add(layoutInflater.inflate(R.layout.activity_calendar, null));
-        viewList.add(layoutInflater.inflate(R.layout.activity_past, null));
-        viewList.add(layoutInflater.inflate(R.layout.activity_chronograph, null));
+        viewList.add(layoutInflater.inflate(R.layout.activity_main_diary, null));
+        viewList.add(layoutInflater.inflate(R.layout.activity_main_count, null));
+        viewList.add(layoutInflater.inflate(R.layout.activity_main_event, null));
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(pagerAdapter);
@@ -156,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateLayout(int position) {
         MyLog.v("updateLayout:" + position);
         switch (position) {
-            case 0: { // Calendar
+            case 0: { // Diary
                 final TextView textLunarDate = (TextView) findViewById(R.id.textLunarDate);
                 Calendar calendar = Calendar.getInstance();
                 textLunarDate.setText(DateUtil.getLunarDateByCalendar(calendar));
@@ -174,18 +168,12 @@ public class MainActivity extends AppCompatActivity {
             }
             break;
 
-            case 1: { // Past
+            case 1: { // Count
             }
             break;
 
-            case 2: { // Chronograph
-                chronometer = (Chronometer) findViewById(R.id.chronometer);
-                chronometer.setFormat("%s");
+            case 2: { // Event
 
-                btnChronometerState = (Button) findViewById(R.id.btnChronometerState);
-                btnChronometerState.setOnClickListener(myOnClickLister);
-                btnChronometerReset = (Button) findViewById(R.id.btnChronometerReset);
-                btnChronometerReset.setOnClickListener(myOnClickLister);
             }
             break;
 
@@ -198,29 +186,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.btnChronometerState:
-                    if (chronometer != null) {
-                        if (!isChronometerRun) {
-                            isChronometerRun = true;
-                            chronometer.start();
-                            btnChronometerState.setText(getString(R.string.chronometer_pause));
-                            btnChronometerReset.setVisibility(View.GONE);
-                        } else {
-                            isChronometerRun = false;
-                            chronometer.stop();
-                            btnChronometerState.setText(getString(R.string.chronometer_continue));
-                            btnChronometerReset.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    break;
 
-                case R.id.btnChronometerReset:
-                    if (chronometer != null) {
-                        chronometer.setBase(SystemClock.elapsedRealtime());
-                        btnChronometerState.setText(getString(R.string.chronometer_start));
-                        btnChronometerReset.setVisibility(View.GONE);
-                    }
-                    break;
+
             }
         }
     };
@@ -232,15 +199,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_calendar:
+                case R.id.navigation_diary:
                     viewPager.setCurrentItem(0);
                     return true;
 
-                case R.id.navigation_past:
+                case R.id.navigation_count:
                     viewPager.setCurrentItem(1);
                     return true;
 
-                case R.id.navigation_chronograph:
+                case R.id.navigation_event:
                     viewPager.setCurrentItem(2);
                     return true;
             }

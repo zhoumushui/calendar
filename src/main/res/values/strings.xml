@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Cherish</string>
+    <string name="app_name">几时</string>
 
     <!-- BottomNavigationView -->
-    <string name="title_calendar">Calendar</string>
-    <string name="title_past">Past</string>
-    <string name="title_chronograph">Chronograph</string>
+    <string name="title_diary">记</string>
+    <string name="title_count">计</string>
+    <string name="title_event">纪</string>
 
     <!-- UncaughtExceptionHandler -->
-    <string name="app_has_exception">App is exception</string>
+    <string name="app_has_exception">很抱歉应用出现异常</string>
 
     <!-- Chronograph -->
-    <string name="chronometer_start">Start</string>
-    <string name="chronometer_pause">Pause</string>
-    <string name="chronometer_continue">Continue</string>
-    <string name="chronometer_reset">Reset</string>
-</resources>
+    <string name="chronometer_start">开始</string>
+    <string name="chronometer_pause">暂停</string>
+    <string name="chronometer_continue">继续</string>
+    <string name="chronometer_reset">重置</string>
 
+</resources>
