@@ -10,10 +10,7 @@
     <!-- UncaughtExceptionHandler -->
     <string name="app_has_exception">很抱歉应用出现异常</string>
 
-    <!-- Chronograph -->
-    <string name="chronometer_start">开始</string>
-    <string name="chronometer_pause">暂停</string>
-    <string name="chronometer_continue">继续</string>
-    <string name="chronometer_reset">重置</string>
-
+    <!-- Count Menu -->
+    <string name="title_add">添加</string>
+    <string name="title_delete">删除</string>
 </resources>

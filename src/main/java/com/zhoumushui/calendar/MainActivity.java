@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,6 @@ import com.zhoumushui.calendar.adapter.CountRecyclerAdapter;
 import com.zhoumushui.calendar.util.DateUtil;
 import com.zhoumushui.calendar.util.MyLog;
 import com.zhoumushui.calendar.view.RecyclerGridDecoration;
-import com.zhoumushui.calendar.view.RecyclerListDecoration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     private RecyclerView recyclerView;
+    private CountRecyclerAdapter countRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.count, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.count_add:
+
+                break;
+
+            case R.id.count_delete:
+                if (countRecyclerAdapter != null)
+                    countRecyclerAdapter.removeData(1);
+                break;
+        }
+        return true;
     }
 
     private void initialLayout() {
@@ -185,11 +208,17 @@ public class MainActivity extends AppCompatActivity {
                     count.setCalendar(Calendar.getInstance());
                     arrayListCount.add(count);
                 }
-                recyclerView.setAdapter(new CountRecyclerAdapter(context, arrayListCount));
+                countRecyclerAdapter = new CountRecyclerAdapter(context, arrayListCount);
+                recyclerView.setAdapter(countRecyclerAdapter);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 //recyclerView.addItemDecoration(new RecyclerListDecoration(context,
                 //       RecyclerListDecoration.LIST_VERTICAL));
                 recyclerView.addItemDecoration(new RecyclerGridDecoration(context));
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+                FloatingActionButton floatActionAdd = (FloatingActionButton)
+                        findViewById(R.id.floatActionAdd);
+                floatActionAdd.setOnClickListener(myOnClickLister);
             }
             break;
 
@@ -207,8 +236,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.floatActionAdd:
+                    Count count = new Count();
+                    count.setCalendar(Calendar.getInstance());
+                    if (countRecyclerAdapter != null)
+                        countRecyclerAdapter.addData(1, count);
+                    break;
 
-
+                default:
+                    break;
             }
         }
     };

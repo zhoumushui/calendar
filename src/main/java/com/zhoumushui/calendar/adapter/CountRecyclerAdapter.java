@@ -56,4 +56,14 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
         }
     }
 
+    public void addData(int position, Count count) {
+        arrayListCount.add(position, count);
+        notifyItemInserted(position);
+    }
+
+    public void removeData(int position) {
+        arrayListCount.remove(position);
+        notifyItemRemoved(position);
+    }
+
 }
