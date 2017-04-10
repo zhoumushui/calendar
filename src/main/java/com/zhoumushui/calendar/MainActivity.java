@@ -8,6 +8,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +21,7 @@ import android.widget.CalendarView;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import com.zhoumushui.calendar.adapter.CountRecyclerAdapter;
 import com.zhoumushui.calendar.util.DateUtil;
 import com.zhoumushui.calendar.util.MyLog;
 
@@ -31,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuItem menuItem;
     private BottomNavigationView bottomNavigationView;
+
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +176,18 @@ public class MainActivity extends AppCompatActivity {
             break;
 
             case 1: { // Count
+                recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                ArrayList<Count> arrayListCount = new ArrayList<Count>();
+                for (int i = 0; i < 55; i++) {
+                    Count count = new Count();
+                    count.setCalendar(Calendar.getInstance());
+                    arrayListCount.add(count);
+                }
+                recyclerView.setAdapter(new CountRecyclerAdapter(context, arrayListCount));
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.addItemDecoration(new DividerItemDecoration(context,
+                        DividerItemDecoration.HORIZONTAL));
             }
             break;
 
