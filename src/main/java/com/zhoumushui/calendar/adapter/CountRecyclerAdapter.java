@@ -60,7 +60,7 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
         Calendar calendar = arrayListCount.get(position).getCalendar();
         holder.textCount.setText("[" + position + "]" + calendar.get(Calendar.YEAR) + "-" +
                 (calendar.get(Calendar.MONTH)
-                + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
+                        + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
         if (onItemClickListener != null) {
             holder.viewItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,6 +105,9 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
     public void removeData(int position) {
         arrayListCount.remove(position);
         notifyItemRemoved(position);
+        if (position != arrayListCount.size()) {
+            notifyItemRangeChanged(position, arrayListCount.size() - position);
+        }
     }
 
     /**
