@@ -1,6 +1,7 @@
 package com.zhoumushui.calendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -22,6 +23,7 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 
 import com.zhoumushui.calendar.adapter.CountRecyclerAdapter;
+import com.zhoumushui.calendar.util.ClickUtil;
 import com.zhoumushui.calendar.util.DateUtil;
 import com.zhoumushui.calendar.util.HintUtil;
 import com.zhoumushui.calendar.util.MyLog;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private CountRecyclerAdapter countRecyclerAdapter;
+    private ArrayList<Count> arrayListCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +83,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.count_add:
-
-                break;
-
-            case R.id.count_delete:
-                if (countRecyclerAdapter != null)
-                    countRecyclerAdapter.removeData(1);
+            case R.id.count_setting:
+                Intent intentSetting = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intentSetting);
                 break;
         }
         return true;
@@ -205,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 // recyclerView.setLayoutManager(new GridLayoutManager(this, 5));
                 recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,
                         StaggeredGridLayoutManager.VERTICAL));
-                ArrayList<Count> arrayListCount = new ArrayList<Count>();
+                arrayListCount = new ArrayList<>();
                 for (int i = 0; i < 55; i++) {
                     Count count = new Count();
                     count.setCalendar(Calendar.getInstance());
@@ -277,10 +276,14 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.floatActionAdd:
-                    Count count = new Count();
-                    count.setCalendar(Calendar.getInstance());
-                    if (countRecyclerAdapter != null)
-                        countRecyclerAdapter.addData(1, count);
+                    if (!ClickUtil.isQuickClick(500)) {
+                        Count count = new Count();
+                        count.setCalendar(Calendar.getInstance());
+                        if (countRecyclerAdapter != null && arrayListCount != null) {
+                            countRecyclerAdapter.addData(arrayListCount.size(), count);
+                            recyclerView.smoothScrollToPosition(arrayListCount.size()-1);
+                        }
+                    }
                     break;
 
                 default:

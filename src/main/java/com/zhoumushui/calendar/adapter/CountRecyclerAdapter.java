@@ -18,6 +18,7 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
 
     private Context context;
     private ArrayList<Count> arrayListCount;
+    private ArrayList<Integer> arrayListHeight;
 
     private OnItemClickListener onItemClickListener;
 
@@ -35,6 +36,11 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
         this.context = context;
         this.arrayListCount = arrayListCount;
 
+        arrayListHeight = new ArrayList<>();
+        for (int i = 0; i < arrayListCount.size(); i++) {
+            arrayListHeight.add(getRandomHeight());
+        }
+
     }
 
     @Override
@@ -47,9 +53,13 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
+        ViewGroup.LayoutParams layoutParams = holder.textCount.getLayoutParams();
+        layoutParams.height = arrayListHeight.get(position);
+        holder.textCount.setLayoutParams(layoutParams);
+
         Calendar calendar = arrayListCount.get(position).getCalendar();
-        // TODO
-        holder.textCount.setText(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH)
+        holder.textCount.setText("[" + position + "]" + calendar.get(Calendar.YEAR) + "-" +
+                (calendar.get(Calendar.MONTH)
                 + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
         if (onItemClickListener != null) {
             holder.viewItem.setOnClickListener(new View.OnClickListener() {
@@ -88,12 +98,22 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
 
     public void addData(int position, Count count) {
         arrayListCount.add(position, count);
+        arrayListHeight.add(position, getRandomHeight());
         notifyItemInserted(position);
     }
 
     public void removeData(int position) {
         arrayListCount.remove(position);
         notifyItemRemoved(position);
+    }
+
+    /**
+     * 获取随机高度
+     *
+     * @return
+     */
+    private int getRandomHeight() {
+        return (int) (200 + Math.random() * 200);
     }
 
 }

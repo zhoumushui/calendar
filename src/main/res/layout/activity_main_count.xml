@@ -27,8 +27,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
+        app:srcCompat="@drawable/icon_add"
         app:backgroundTint="@color/colorAccent"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/ic_add_black_24dp" />
+        app:fabSize="normal" />
 
 </RelativeLayout>
