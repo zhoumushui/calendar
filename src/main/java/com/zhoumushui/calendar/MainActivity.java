@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import com.zhoumushui.calendar.adapter.CountRecyclerAdapter;
 import com.zhoumushui.calendar.util.DateUtil;
+import com.zhoumushui.calendar.util.HintUtil;
 import com.zhoumushui.calendar.util.MyLog;
 import com.zhoumushui.calendar.view.RecyclerGridDecoration;
 
@@ -209,6 +212,43 @@ public class MainActivity extends AppCompatActivity {
                     arrayListCount.add(count);
                 }
                 countRecyclerAdapter = new CountRecyclerAdapter(context, arrayListCount);
+                countRecyclerAdapter.setOnItemClickListener(new CountRecyclerAdapter
+                        .OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        HintUtil.showToast(context, "Click:" + position);
+                    }
+
+                    @Override
+                    public void onItemLongClick(View view, int position) {
+                        countRecyclerAdapter.removeData(position);
+                        Snackbar snackbar = Snackbar.make((CoordinatorLayout)
+                                        findViewById(R.id.coordinatorSnack), "删除了:" + position,
+                                Snackbar.LENGTH_LONG);
+                        snackbar.setAction("撤销", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                HintUtil.showToast(context, "覆水难收！！");
+                            }
+                        });
+                        snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent));
+                        snackbar.addCallback(new Snackbar.Callback() {
+                            @Override
+                            public void onShown(Snackbar sb) {
+                                super.onShown(sb);
+                            }
+
+                            @Override
+                            public void onDismissed(Snackbar transientBottomBar, int event) {
+                                super.onDismissed(transientBottomBar, event);
+                            }
+                        });
+                        if (snackbar.isShown())
+                            snackbar.dismiss();
+                        else
+                            snackbar.show();
+                    }
+                });
                 recyclerView.setAdapter(countRecyclerAdapter);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 //recyclerView.addItemDecoration(new RecyclerListDecoration(context,

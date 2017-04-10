@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.zhoumushui.calendar.Count;
@@ -17,6 +18,18 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
 
     private Context context;
     private ArrayList<Count> arrayListCount;
+
+    private OnItemClickListener onItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+
+        void onItemLongClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public CountRecyclerAdapter(Context context, ArrayList<Count> arrayListCount) {
         this.context = context;
@@ -33,12 +46,27 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         Calendar calendar = arrayListCount.get(position).getCalendar();
-
         // TODO
         holder.textCount.setText(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH)
                 + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
+        if (onItemClickListener != null) {
+            holder.viewItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(v, position);
+                }
+            });
+
+            holder.viewItem.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onItemClickListener.onItemLongClick(v, position);
+                    return true;
+                }
+            });
+        }
     }
 
     @Override
@@ -48,10 +76,12 @@ public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdap
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
+        View viewItem;
         TextView textCount;
 
         public MyViewHolder(View view) {
             super(view);
+            viewItem = view;
             textCount = (TextView) view.findViewById(R.id.textCount);
         }
     }
