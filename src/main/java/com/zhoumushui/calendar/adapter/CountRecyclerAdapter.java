@@ -13,10 +13,6 @@ import com.zhoumushui.calendar.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * Created by Administrator on 2017/4/10.
- */
-
 public class CountRecyclerAdapter extends RecyclerView.Adapter<CountRecyclerAdapter.MyViewHolder> {
 
     private Context context;

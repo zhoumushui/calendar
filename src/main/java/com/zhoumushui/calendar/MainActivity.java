@@ -2,7 +2,6 @@ package com.zhoumushui.calendar;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.PagerAdapter;
@@ -16,14 +15,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.zhoumushui.calendar.adapter.CountRecyclerAdapter;
 import com.zhoumushui.calendar.util.DateUtil;
 import com.zhoumushui.calendar.util.MyLog;
+import com.zhoumushui.calendar.view.CountRecyclerDecoration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -186,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 recyclerView.setAdapter(new CountRecyclerAdapter(context, arrayListCount));
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.addItemDecoration(new DividerItemDecoration(context,
-                        DividerItemDecoration.HORIZONTAL));
+                recyclerView.addItemDecoration(new CountRecyclerDecoration(context,
+                        CountRecyclerDecoration.LIST_VERTICAL));
             }
             break;
 
