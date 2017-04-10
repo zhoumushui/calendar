@@ -8,9 +8,8 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,8 @@ import android.widget.TextView;
 import com.zhoumushui.calendar.adapter.CountRecyclerAdapter;
 import com.zhoumushui.calendar.util.DateUtil;
 import com.zhoumushui.calendar.util.MyLog;
-import com.zhoumushui.calendar.view.CountRecyclerDecoration;
+import com.zhoumushui.calendar.view.RecyclerGridDecoration;
+import com.zhoumushui.calendar.view.RecyclerListDecoration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -175,7 +175,10 @@ public class MainActivity extends AppCompatActivity {
 
             case 1: { // Count
                 recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                // recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                // recyclerView.setLayoutManager(new GridLayoutManager(this, 5));
+                recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,
+                        StaggeredGridLayoutManager.VERTICAL));
                 ArrayList<Count> arrayListCount = new ArrayList<Count>();
                 for (int i = 0; i < 55; i++) {
                     Count count = new Count();
@@ -184,8 +187,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 recyclerView.setAdapter(new CountRecyclerAdapter(context, arrayListCount));
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.addItemDecoration(new CountRecyclerDecoration(context,
-                        CountRecyclerDecoration.LIST_VERTICAL));
+                //recyclerView.addItemDecoration(new RecyclerListDecoration(context,
+                //       RecyclerListDecoration.LIST_VERTICAL));
+                recyclerView.addItemDecoration(new RecyclerGridDecoration(context));
             }
             break;
 

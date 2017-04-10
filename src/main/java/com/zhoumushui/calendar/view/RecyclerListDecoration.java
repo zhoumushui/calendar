@@ -9,7 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public class CountRecyclerDecoration extends RecyclerView.ItemDecoration {
+public class RecyclerListDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private Drawable drawableDivider;
@@ -18,7 +18,7 @@ public class CountRecyclerDecoration extends RecyclerView.ItemDecoration {
     public static final int LIST_HORIZONTAL = LinearLayoutManager.HORIZONTAL;
     public static final int LIST_VERTICAL = LinearLayoutManager.VERTICAL;
 
-    public CountRecyclerDecoration(Context context, int orientation) {
+    public RecyclerListDecoration(Context context, int orientation) {
         final TypedArray typedArray = context.obtainStyledAttributes(ATTRS);
         drawableDivider = typedArray.getDrawable(0);
         typedArray.recycle();
